@@ -1,5 +1,4 @@
 package helpers;
-import main.Main;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -8,12 +7,11 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Helper {
     public static MatchResultType findMatchResultType(String neededType){
         for (MatchResultType e : MatchResultType.values()) {
-            if (e.getStringValue().equals(neededType)){
+            if (e.name().equals(neededType)){
                 return e;
             }
         }
@@ -22,7 +20,7 @@ public class Helper {
 
     public static PlayerMoveType findPlayerMoveType(String neededMove) {
         for (PlayerMoveType e : PlayerMoveType.values()) {
-            if (e.getStringValue().equals(neededMove)){
+            if (e.name().equals(neededMove)){
                 return e;
             }
         }
