@@ -110,10 +110,10 @@ public class BetProcessor {
     private void generateIllegitimatePlayerLine(Player player, Move move) {
         stringBuilder
                 .append(player.getId()).append(" ")
-                .append(move.getMoveType().getStringValue()).append(" ")
+                .append(move.getMoveType().name()).append(" ")
                 .append(move.getMatch() == null ? "null" : move.getMatch().getId()).append(" ")
                 .append(move.getAmount()).append(" ")
-                .append(move.getMatchResult() == null ? "null" : move.getMatchResult().getStringValue()).append("\n");
+                .append(move.getMatchResult() == null ? "null" : move.getMatchResult().name()).append("\n");
         illegitimateLines.add(stringBuilder.toString());
         stringBuilder.setLength(0);
     }
