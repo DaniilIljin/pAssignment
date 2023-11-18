@@ -1,17 +1,19 @@
 package helpers;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Helper {
     public static MatchResultType findMatchResultType(String neededType){
         for (MatchResultType e : MatchResultType.values()) {
-            if (e.name().equals(neededType)){
+            if (e.name().equals(neededType.toUpperCase().trim())){
                 return e;
             }
         }
@@ -20,11 +22,19 @@ public class Helper {
 
     public static PlayerMoveType findPlayerMoveType(String neededMove) {
         for (PlayerMoveType e : PlayerMoveType.values()) {
-            if (e.name().equals(neededMove)){
+            if (e.name().equals(neededMove.toUpperCase().trim())){
                 return e;
             }
         }
         throw new RuntimeException("No such type of move");
+    }
+
+    public static void addLinesToResultString(StringBuilder stringBuilder, List<String> lines){
+        if (lines.isEmpty()) stringBuilder.append("\n");
+        for (String line : lines) {
+            stringBuilder.append(line);
+        }
+        stringBuilder.append("\n");
     }
 
     public static List<String> readFromFile(String filePath){
@@ -43,7 +53,8 @@ public class Helper {
     public static void createAndWriteToFile(String filePath, String content){
         try {
             String outputPath = filePath;
-            Files.writeString(Path.of(outputPath), content, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            Files.writeString(Path.of(outputPath), content, StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();
         }
