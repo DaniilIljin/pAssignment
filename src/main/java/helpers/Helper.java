@@ -1,5 +1,7 @@
 package helpers;
 
+import exceptions.NotExistingTypeException;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -16,7 +18,7 @@ public class Helper {
                 return e;
             }
         }
-        throw new RuntimeException("No such type of result");
+        throw new NotExistingTypeException("No such type of result");
     }
 
     public static PlayerMoveType findPlayerMoveType(String neededMove) {
@@ -25,7 +27,7 @@ public class Helper {
                 return e;
             }
         }
-        throw new RuntimeException("No such type of move");
+        throw new NotExistingTypeException("No such type of move");
     }
 
     public static void addLinesToResultString(StringBuilder stringBuilder, List<String> lines){

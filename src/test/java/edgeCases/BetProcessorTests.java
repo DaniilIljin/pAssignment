@@ -26,9 +26,4 @@ public class BetProcessorTests {
         // Assert
         assertEquals(expectedContent, actualContent);
     }
-
-    /*TODO:
-       test if illegitimate move is bet,
-       test if
-     */
 }

@@ -1,5 +1,8 @@
 package main;
 
+import exceptions.NotAbleToPaseDataException;
+import exceptions.NotEnoughDataException;
+import exceptions.NotExistingObjectException;
 import helpers.Helper;
 import helpers.MatchResultType;
 import helpers.PlayerMoveType;
@@ -150,7 +153,7 @@ public class BetProcessor {
     private Match getMatchById(String Id, Map<String, Match> matches) {
         Match res = matches.get(Id);
         if (res == null) {
-            throw new RuntimeException("Match with this Id does not exist: " + Id);
+            throw new NotExistingObjectException("Match with this Id does not exist: " + Id);
         }
         return res;
     }
@@ -184,19 +187,19 @@ public class BetProcessor {
         return matches;
     }
     private void validateMatchData(String[] data) {
-        if (data.length != 4) throw new RuntimeException("Match data must contain 4 elements: " + data);
+        if (data.length != 4) throw new NotEnoughDataException("Match line of data must contain 4 elements: " + data);
         try {
             Float.parseFloat(data[1]);
             Float.parseFloat(data[2]);
         } catch (NumberFormatException e) {
-            throw new RuntimeException("Can not parse rate in given data: " + data);
+            throw new NotAbleToPaseDataException("Can not parse rate in given data: " + data[1] + " or " + data[2]);
         }
     }
     private void validatePlayerData(String[] data) {
         try {
             Integer.valueOf(data[3]);
         } catch (NumberFormatException e){
-            throw new RuntimeException("Can not parse amount in given data: " + data);
+            throw new NotAbleToPaseDataException("Can not parse amount in given data: " + data[3]);
         }
     }
 }
