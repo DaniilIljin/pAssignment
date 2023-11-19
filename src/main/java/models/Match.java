@@ -9,8 +9,8 @@ import java.util.UUID;
 @Data
 public class Match {
     private UUID Id;
-    private Double returnRateA;
-    private Double returnRateB;
+    private float returnRateA;
+    private float returnRateB;
     private MatchResultType matchResult;
 
     @Override

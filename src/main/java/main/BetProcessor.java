@@ -8,7 +8,8 @@ import models.Match;
 import models.Move;
 import models.Player;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class BetProcessor {
@@ -96,7 +97,7 @@ public class BetProcessor {
         player.setBalance(player.getBalance() + move.getAmount());
     }
     private Integer calculateWin(Move move) {
-        Double multiplier = move.getMatch().getMatchResult().equals(MatchResultType.A) ?
+        float multiplier = move.getMatch().getMatchResult().equals(MatchResultType.A) ?
                 move.getMatch().getReturnRateA() : move.getMatch().getReturnRateB();
         return (int) (Math.floor(move.getAmount() * multiplier));
     }
@@ -114,13 +115,12 @@ public class BetProcessor {
         stringBuilder.setLength(0);
     }
     private void generateLegitimatePlayerLine(Player player) {
-        double winR = ((double) player.getWins()) / player.getBets();
-        String winRate = new DecimalFormat("#.##")
-                .format(winR).replace(".",",");
+        BigDecimal winRate = new BigDecimal(player.getWins())
+                .divide(new BigDecimal(player.getBets()), 2, RoundingMode.HALF_UP);
         stringBuilder
                 .append(player.getId()).append(" ")
                 .append(player.getBalance()).append(" ")
-                .append(winRate).append("\n");
+                .append(winRate.toString().replace(".",",")).append("\n");
         legitimateLines.add(stringBuilder.toString());
         stringBuilder.setLength(0);
     }
@@ -174,8 +174,8 @@ public class BetProcessor {
             validateMatchData(data);
             Match match = new Match(
                     UUID.fromString(data[0]),
-                    Double.valueOf(data[1]),
-                    Double.valueOf(data[2]),
+                    Float.parseFloat(data[1]),
+                    Float.parseFloat(data[2]),
                     Helper.findMatchResultType(data[3])
 
             );
@@ -186,8 +186,8 @@ public class BetProcessor {
     private void validateMatchData(String[] data) {
         if (data.length != 4) throw new RuntimeException("Match data must contain 4 elements: " + data);
         try {
-            Double.valueOf(data[1]);
-            Double.valueOf(data[2]);
+            Float.parseFloat(data[1]);
+            Float.parseFloat(data[2]);
         } catch (NumberFormatException e) {
             throw new RuntimeException("Can not parse rate in given data: " + data);
         }
