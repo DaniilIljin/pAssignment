@@ -1,17 +1,10 @@
 package edgeCases;
 
 import helpers.Helper;
-import helpers.MatchResultType;
 import main.BetProcessor;
-import models.Match;
-import models.Move;
-import models.Player;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BetProcessorTests {
 
@@ -33,4 +26,9 @@ public class BetProcessorTests {
         // Assert
         assertEquals(actualContent, expectedContent);
     }
+
+    /*TODO:
+       test if illegitimate move is bet,
+       test if
+     */
 }

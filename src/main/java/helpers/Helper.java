@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Helper {
     public static MatchResultType findMatchResultType(String neededType){

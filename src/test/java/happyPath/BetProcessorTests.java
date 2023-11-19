@@ -1,4 +1,4 @@
-package mainFlow;
+package happyPath;
 
 import helpers.MatchResultType;
 import main.BetProcessor;
@@ -12,15 +12,18 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BetProcessorTests {
-    private final String MATCHES_DATA_FILEPATH = "src/test/resources/match_data.txt";
-    private final String PLAYERS_DATA_FILEPATH = "src/test/resources/player_data.txt";
-    private final String RESULT_FILEPATH = "src/test/java/mainFlow/result.txt";
+    private BetProcessor getNewBetProcessor(){
+        String MATCHES_DATA_FILEPATH = "src/test/resources/match_data.txt";
+        String PLAYERS_DATA_FILEPATH = "src/test/resources/player_data.txt";
+        String RESULT_FILEPATH = "src/test/java/mainFlow/result.txt";
 
+        return new BetProcessor(MATCHES_DATA_FILEPATH, PLAYERS_DATA_FILEPATH, RESULT_FILEPATH);
+    }
 
     @Test
     public void givenInputFiles_whenCreateMatchesMethodIsCalled_thenReturnExpectedMatches() {
         // Arrange
-        BetProcessor betProcessor = new BetProcessor(MATCHES_DATA_FILEPATH, PLAYERS_DATA_FILEPATH, RESULT_FILEPATH);
+        BetProcessor betProcessor = getNewBetProcessor();
         Map<String, Match> expectedMatches = new HashMap<>(){{
             put("abae2255-4255-4304-8589-737cdff61640",
                     new Match(UUID.fromString("abae2255-4255-4304-8589-737cdff61640"),
@@ -50,7 +53,7 @@ public class BetProcessorTests {
     @Test
     public void givenInputFiles_whenCreatePlayersListMethodCalled_thenReturnExpectedPlayers() {
         // Arrange
-        BetProcessor betProcessor = new BetProcessor(MATCHES_DATA_FILEPATH, PLAYERS_DATA_FILEPATH, RESULT_FILEPATH);
+        BetProcessor betProcessor = getNewBetProcessor();
         List<Player> expectedPlayers = new ArrayList<>(){};
         Player player1 = new Player();
         player1.setId(UUID.fromString("163f23ed-e9a9-4e54-a5b1-4e1fc86f12f4"));
@@ -83,7 +86,7 @@ public class BetProcessorTests {
     @Test
     public void givenInputFiles_whenAnalyseDataMethodCalled_thenBetProcessorHasCorrectData() {
         // Arrange
-        BetProcessor betProcessor = new BetProcessor(MATCHES_DATA_FILEPATH, PLAYERS_DATA_FILEPATH, RESULT_FILEPATH);
+        BetProcessor betProcessor = getNewBetProcessor();
         List<String> expectedLegitimateLines = new ArrayList<>(List.of(
                 "163f23ed-e9a9-4e54-a5b1-4e1fc86f12f4 4475 0,25\n",
                 "4925ac98-833b-454b-9342-13ed3dfd3ccf 408 1\n"
