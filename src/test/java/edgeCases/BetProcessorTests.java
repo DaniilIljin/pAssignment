@@ -24,7 +24,7 @@ public class BetProcessorTests {
                 "", Helper.readFromFile("src/test/java/edgeCases/result.txt")).trim();
 
         // Assert
-        assertEquals(actualContent, expectedContent);
+        assertEquals(expectedContent, actualContent);
     }
 
     /*TODO:

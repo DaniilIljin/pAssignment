@@ -27,19 +27,19 @@ public class BetProcessorTests {
         Map<String, Match> expectedMatches = new HashMap<>(){{
             put("abae2255-4255-4304-8589-737cdff61640",
                     new Match(UUID.fromString("abae2255-4255-4304-8589-737cdff61640"),
-                            1.45, 0.75, MatchResultType.A));
+                            1.45f, 0.75f, MatchResultType.A));
             put("a3815c17-9def-4034-a21f-65369f6d4a56",
                     new Match(UUID.fromString("a3815c17-9def-4034-a21f-65369f6d4a56"),
-                            4.34, 0.23, MatchResultType.B));
+                            4.34f, 0.23f, MatchResultType.B));
             put("2b20e5bb-9a32-4d33-b304-a9c7000e6de9",
                     new Match(UUID.fromString("2b20e5bb-9a32-4d33-b304-a9c7000e6de9"),
-                            0.54, 1.85, MatchResultType.DRAW));
+                            0.54f, 1.85f, MatchResultType.DRAW));
             put("d6c8b5a4-31ce-4bf8-8511-206cfd693440",
                     new Match(UUID.fromString("d6c8b5a4-31ce-4bf8-8511-206cfd693440"),
-                            0.88, 1.17, MatchResultType.B));
+                            0.88f, 1.17f, MatchResultType.B));
             put("0037ae59-61ea-46c3-88a8-8ca705acde10",
                     new Match(UUID.fromString("0037ae59-61ea-46c3-88a8-8ca705acde10"),
-                            2.43, 0.41, MatchResultType.B));
+                            2.43f, 0.41f, MatchResultType.B));
         }};
 
         // Act
@@ -47,7 +47,7 @@ public class BetProcessorTests {
 
 
         // Assert
-        assertEquals(foundMatches, expectedMatches);
+        assertEquals(expectedMatches, foundMatches);
     }
 
     @Test
@@ -78,8 +78,8 @@ public class BetProcessorTests {
             Optional<Player> actualPlayer = actualPlayers.stream()
                     .filter(p -> p.getId().equals(expectedPlayer.getId())).findFirst();
             assertTrue(actualPlayer.isPresent());
-            assertEquals(actualPlayer.get().getId(), expectedPlayer.getId());
-            assertEquals(actualPlayer.get().getMoves().size(), expectedPlayer.getMoves().size());
+            assertEquals(expectedPlayer.getId(), actualPlayer.get().getId());
+            assertEquals(expectedPlayer.getMoves().size(), actualPlayer.get().getMoves().size());
         }
     }
 
@@ -89,7 +89,7 @@ public class BetProcessorTests {
         BetProcessor betProcessor = getNewBetProcessor();
         List<String> expectedLegitimateLines = new ArrayList<>(List.of(
                 "163f23ed-e9a9-4e54-a5b1-4e1fc86f12f4 4475 0,25\n",
-                "4925ac98-833b-454b-9342-13ed3dfd3ccf 408 1\n"
+                "4925ac98-833b-454b-9342-13ed3dfd3ccf 408 1,00\n"
         )){};
         List<String> expectedIllegitimateLines = new ArrayList<>(){};
 
@@ -98,7 +98,7 @@ public class BetProcessorTests {
         betProcessor.analyseData(players);
 
         // Assert
-        assertEquals(betProcessor.getLegitimateLines(), expectedLegitimateLines);
-        assertEquals(betProcessor.getIllegitimateLines(), expectedIllegitimateLines);
+        assertEquals(expectedLegitimateLines, betProcessor.getLegitimateLines());
+        assertEquals(expectedIllegitimateLines, betProcessor.getIllegitimateLines());
     }
 }
