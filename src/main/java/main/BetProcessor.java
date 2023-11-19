@@ -1,6 +1,6 @@
 package main;
 
-import exceptions.NotAbleToPaseDataException;
+import exceptions.NotAbleToParseDataException;
 import exceptions.NotEnoughDataException;
 import exceptions.NotExistingObjectException;
 import helpers.Helper;
@@ -192,14 +192,14 @@ public class BetProcessor {
             Float.parseFloat(data[1]);
             Float.parseFloat(data[2]);
         } catch (NumberFormatException e) {
-            throw new NotAbleToPaseDataException("Can not parse rate in given data: " + data[1] + " or " + data[2]);
+            throw new NotAbleToParseDataException("Can not parse rate in given data: " + data[1] + " or " + data[2]);
         }
     }
     private void validatePlayerData(String[] data) {
         try {
             Integer.valueOf(data[3]);
         } catch (NumberFormatException e){
-            throw new NotAbleToPaseDataException("Can not parse amount in given data: " + data[3]);
+            throw new NotAbleToParseDataException("Can not parse amount in given data: " + data[3]);
         }
     }
 }

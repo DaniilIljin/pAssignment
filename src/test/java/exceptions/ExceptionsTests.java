@@ -28,7 +28,7 @@ public class ExceptionsTests {
                 "src/test/java/exceptions/result.txt");
 
         // Assert
-        assertThrows(NotAbleToPaseDataException.class, betProcessor::createMatchesMap);
+        assertThrows(NotAbleToParseDataException.class, betProcessor::createMatchesMap);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ExceptionsTests {
                 "src/test/java/exceptions/result.txt");
 
         // Assert
-        assertThrows(NotAbleToPaseDataException.class, betProcessor::collectData);
+        assertThrows(NotAbleToParseDataException.class, betProcessor::collectData);
     }
 
     @Test
