@@ -46,6 +46,8 @@ public class BetProcessor {
     private void generatePlayerLine(Player player) {
         for (Move move : player.getMoves()) {
             if (isEnoughMoneyOnPlayerBalance(player, move)) {
+                //if player has not enough money to WITHDRAW or BET,
+                //then player's move will be considered illegal
                 generateIllegitimatePlayerLine(player, move);
                 currentPlayerCasinoBalance = 0;
                 return;
@@ -57,16 +59,9 @@ public class BetProcessor {
         generateLegitimatePlayerLine(player);
     }
     private void generateResult() {
-        if (legitimateLines.isEmpty()) stringBuilder.append("\n");
-        for (String line : legitimateLines) {
-            stringBuilder.append(line);
-        }
-        stringBuilder.append("\n");
-        if (illegitimateLines.isEmpty()) stringBuilder.append("\n");
-        for (String line : illegitimateLines) {
-            stringBuilder.append(line);
-        }
-        stringBuilder.append("\n").append(casinoBalance);
+        Helper.addLinesToResultString(stringBuilder, legitimateLines);
+        Helper.addLinesToResultString(stringBuilder, illegitimateLines);
+        stringBuilder.append(casinoBalance);
         Helper.createAndWriteToFile(RESULT_FILEPATH, stringBuilder.toString());
         stringBuilder.setLength(0);
     }
@@ -82,6 +77,7 @@ public class BetProcessor {
     private void executePlayerBet(Player player, Move move) {
         player.setBets(player.getBets() + 1);
         if (move.getMatch().getMatchResult().equals(MatchResultType.DRAW)){
+            // because of the draw player balance does not change
             return;
         } else if (move.getMatchResult().equals(move.getMatch().getMatchResult())) {
             player.setWins(player.getWins() + 1);
@@ -133,13 +129,12 @@ public class BetProcessor {
         Map<String, Player> players = new HashMap<>();
         for (String line : lines) {
             String[] data = line.split(",");
-            if (validatePlayerData(data)) {
-                Move move = new Move();
-                move.setMoveType(Helper.findPlayerMoveType(data[1]));
-                move.setAmount(Integer.valueOf(data[3]));
-                addMoveToPlayer(data[0], players, move);
-                addMatchIfMoveTypeIsBet(foundMatches, move, data);
-            }
+            validatePlayerData(data);
+            Move move = new Move();
+            move.setMoveType(Helper.findPlayerMoveType(data[1]));
+            move.setAmount(Integer.valueOf(data[3]));
+            addMoveToPlayer(data[0], players, move);
+            addMatchIfMoveTypeIsBet(foundMatches, move, data);
         }
         return players.values().stream().toList();
     }
@@ -176,23 +171,32 @@ public class BetProcessor {
         HashMap<String, Match> matches = new HashMap<>();
         for (String line : lines) {
             String[] data = line.split(",");
-            if (validateMatchData(data)) {
-                Match match = new Match(
-                        UUID.fromString(data[0]),
-                        Double.valueOf(data[1]),
-                        Double.valueOf(data[2]),
-                        Helper.findMatchResultType(data[3])
+            validateMatchData(data);
+            Match match = new Match(
+                    UUID.fromString(data[0]),
+                    Double.valueOf(data[1]),
+                    Double.valueOf(data[2]),
+                    Helper.findMatchResultType(data[3])
 
-                );
-                matches.put(data[0], match);
-            }
+            );
+            matches.put(data[0], match);
         }
         return matches;
     }
-    private boolean validateMatchData(String[] data) {
-        return data.length == 4;
+    private void validateMatchData(String[] data) {
+        if (data.length != 4) throw new RuntimeException("Match data must contain 4 elements: " + data);
+        try {
+            Double.valueOf(data[1]);
+            Double.valueOf(data[2]);
+        } catch (NumberFormatException e) {
+            throw new RuntimeException("Can not parse rate in given data: " + data);
+        }
     }
-    private boolean validatePlayerData(String[] data) {
-        return true;
+    private void validatePlayerData(String[] data) {
+        try {
+            Integer.valueOf(data[3]);
+        } catch (NumberFormatException e){
+            throw new RuntimeException("Can not parse amount in given data: " + data);
+        }
     }
 }
